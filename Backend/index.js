@@ -6,6 +6,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import messageRoute from './routes/message.route.js'
 import { app, server } from './SocketIO/server.js';
+import path from 'path'
 //------------database connectivity------------
 dotenv.config()
 const PORT = process.env.PORT || 4002
@@ -20,6 +21,27 @@ app.use(express.urlencoded({extended:true}));
  
 app.use('/api/user',userRoute);
 app.use('/api/message',messageRoute)
+
+//--------------Deplyment code-----
+
+if(process.env.NODE_ENV === "production"){
+  
+  const dirPath = path.resolve()
+
+app.use(express.static("./Frontend/dist"))
+app.get("*",(req,res)=>{
+  res.sendFile(path.resolve(dirPath,"./Frontend/dist",'index.html'));
+})
+
+}
+
+
+
+
+
+
+
+
 
 
 try {
