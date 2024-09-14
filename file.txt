@@ -1,0 +1,39 @@
+export const signup =async (req,res)=>{
+     
+  const {fullname,email,password,confirmPassword} = req.body;
+  if (!fullname) {
+    return res.status(400).json({ error: 'Full name is required' });
+  }
+   try{
+  if(password!==confirmPassword){
+    return res.status(400).json({error:"Password do not match"});
+  }
+  const user =await User.findOne({email})
+  if(user){
+   return res.status(400).json({error:"User alredy have account plz sign in !!"})
+  }
+
+  //HAshing the password
+   const hashPassword =await bcrypt.hash(password,12);
+
+  const newUser = await new User({
+    fullname,
+    email,
+    password:hashPassword,
+   
+  })
+  await newUser.save();
+  if(newUser){
+    tokenAndcookie(newUser._id,res);
+    res.status(200).json({message:"user Created succesfully"},newUser);
+  }
+
+   } catch(error){
+     console.log(error.message)
+    return res.status(505).json({error:"Internal server error"});
+   }
+}
+
+//----------------------------------------
+
+
