@@ -7,6 +7,8 @@ import toast from 'react-hot-toast';
 
 function Signup() {
 
+  const [authUser,setAuthUser] = useAuth()
+
   const {
     register,
     handleSubmit,
@@ -21,10 +23,8 @@ const confirmPassword = watch("confirmPassword")
     return value === password || "Password do not match "
   }
 
+
   const onSubmit = async (data) => {
-
-   const [authUser,setAuthUser] = useAuth()
-
     const userInfo={
       fullname:data.fullname,
       email:data.email,
@@ -141,7 +141,8 @@ const confirmPassword = watch("confirmPassword")
             <p>
               have an account? <Link to="/login" className='text-blue-500 underline cursor-pointer ml-1'>Login</Link>
             </p>
-            <input type="submit" value="Signup" className='bg-green-400 text-sm rounded-lg text-white px-2 py-1 cursor-pointer'/>
+            <input 
+            type="submit" value="Signup" className='bg-green-400 text-sm rounded-lg text-white px-2 py-1 cursor-pointer'/>
            </div>
         </form>
       </div>
